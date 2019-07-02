@@ -1,2 +1,39 @@
-# single_cell_image
-Ubuntu image with Anaconda3 and tools for single cell analyses
+# Docker image for single cell analysis
+
+This image is intended to be used for single cell analysis with Python3 and R. It is an Ubuntu image with Anaconda3 installation and installation of the [single-cell-tutorial](https://www.github.com/theislab/single-cell-tutorial) by Luecken & Theis (2019). The latter brings several tools for single cell analysis to execute their case study for best practices in single cell analysis. The following is a list from their yml file:
+ - cmake
+ - r-essentials
+ - r-rgl
+ - pandas
+ - numpy
+ - scipy
+ - scikit-learn
+ - jupyter
+ - gsl
+ - tzlocal
+ - simplegeneric
+ - natsort
+ - h5py
+ - tqdm
+ - patsy
+ - llvmlite
+ - numba
+ - networkx
+ - joblib
+ - numexpr
+ - pytables
+ - seaborn
+ - statsmodels
+ - python-igraph
+ - louvain
+ - r-rngtools
+ - bioconductor-rhdf5lib
+ - pip
+ - pip:
+   - MulticoreTSNE
+   - anndata
+   - fa2
+   - gprofiler-official
+   - scanpy
+   - rpy2
+   - git+https://github.com/flying-sheep/anndata2ri
