@@ -66,22 +66,27 @@ unset LDFLAGS_OLD' \
 >>/home/ubuntu/anaconda3/envs/sc-tutorial/etc/conda/deactivate.d/env_vars.sh
 
 # automatically start env in bash
+SHELL ["/bin/bash", "-c"]
 RUN echo "source activate sc-tutorial" > ~/.bashrc
 ENV PATH /home/ubuntu/anaconda3/envs/sc-tutorial/bin:$PATH
 
-# install missing R packages
-RUN echo "install.packages(c('devtools', 'gam', 'RColorBrewer', 'BiocManager'), repos='http://cran.us.r-project.org')\n\
-update.packages(ask=F, repos='http://cran.us.r-project.org')\n\
-BiocManager::install(c('scran','MAST','monocle','ComplexHeatmap','slingshot'), version='3.8')" > install_R_pkgs.Rscript
-RUN bash -c "Rscript install_R_pkgs.Rscript"
+# install R packages into conda environment
+ADD install_R_pkgs.R /tmp/
+RUN R -f /tmp/install_R_pkgs.R
 
 # Configuring access to Jupyter (pw="root")
 RUN mkdir /home/ubuntu/notebooks
-RUN jupyter notebook --generate-config --allow-root
-RUN echo "c.NotebookApp.password = u'sha1:6a3f528eec40:6e896b6e4828f525a6e20e5411cd1c8075d68619'" >> /home/ubuntu/.jupyter/jupyter_notebook_config.py
+RUN jupyter notebook --generate-config
+RUN echo 'c.NotebookApp.token = ""' >> /home/ubuntu/.jupyter/jupyter_notebook_config.py
 
 # Jupyter listens port: 8888
 EXPOSE 8888
 
-# Run Jupyter notebook as Docker main process
-CMD jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser
+# # Download Haber 2017 data
+# RUN mkdir -p /home/ubuntu/single-cell-tutorial/data/Haber-et-al_mouse-intestinal-epithelium/
+# RUN mkdir -p /home/ubuntu/single-cell-tutorial/data/Haber-et-al_mouse-intestinal-epithelium/GSE92332_RAW
+# RUN wget ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE92nnn/GSE92332/suppl/GSE92332_RAW.tar
+# RUN tar -C /home/ubuntu/single-cell-tutorial/data/Haber-et-al_mouse-intestinal-epithelium/GSE92332_RAW -xvf GSE92332_RAW.tar
+# RUN cd /home/ubuntu/single-cell-tutorial/data/Haber-et-al_mouse-intestinal-epithelium && gunzip GSE92332_RAW/*_Regional_*
+
+CMD jupyter nbconvert --ExecutePreprocessor.timeout=None --to notebook --execute /home/ubuntu/single-cell-tutorial/latest_notebook/Case-study_Mouse-intestinal-epithelium_1906.ipynb && jupyter nbconvert /home/ubuntu/single-cell-tutorial/latest_notebook/Case-study_Mouse-intestinal-epithelium_1906.ipynb

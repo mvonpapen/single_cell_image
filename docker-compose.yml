@@ -1,0 +1,13 @@
+version: '3'
+services:
+  sut:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports: 
+      - "8888:8888"
+    environment:
+      - DISPLAY
+    volumes:
+      -  C:\Users\PapenMi\git_repos\single-cell-tutorial\data:/home/ubuntu/single-cell-tutorial/data
+#    entrypoint: jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser
