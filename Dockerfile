@@ -82,11 +82,8 @@ RUN echo 'c.NotebookApp.token = ""' >> /home/ubuntu/.jupyter/jupyter_notebook_co
 # Jupyter listens port: 8888
 EXPOSE 8888
 
-# # Download Haber 2017 data
-# RUN mkdir -p /home/ubuntu/single-cell-tutorial/data/Haber-et-al_mouse-intestinal-epithelium/
-# RUN mkdir -p /home/ubuntu/single-cell-tutorial/data/Haber-et-al_mouse-intestinal-epithelium/GSE92332_RAW
-# RUN wget ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE92nnn/GSE92332/suppl/GSE92332_RAW.tar
-# RUN tar -C /home/ubuntu/single-cell-tutorial/data/Haber-et-al_mouse-intestinal-epithelium/GSE92332_RAW -xvf GSE92332_RAW.tar
-# RUN cd /home/ubuntu/single-cell-tutorial/data/Haber-et-al_mouse-intestinal-epithelium && gunzip GSE92332_RAW/*_Regional_*
+# Add Haber 2017 data
+COPY data /home/ubuntu/single-cell-tutorial/data
 
-CMD jupyter nbconvert --ExecutePreprocessor.timeout=None --to notebook --execute /home/ubuntu/single-cell-tutorial/latest_notebook/Case-study_Mouse-intestinal-epithelium_1906.ipynb && jupyter nbconvert /home/ubuntu/single-cell-tutorial/latest_notebook/Case-study_Mouse-intestinal-epithelium_1906.ipynb
+# Run jupyter notebook and export as html
+# CMD jupyter nbconvert --ExecutePreprocessor.timeout=None --to notebook --execute --to html /home/ubuntu/single-cell-tutorial/latest_notebook/Case-study_Mouse-intestinal-epithelium_1906.ipynb
