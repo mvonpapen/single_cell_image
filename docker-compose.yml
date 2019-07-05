@@ -8,7 +8,7 @@ services:
       - "8888:8888"
     environment:
       - DISPLAY
-#    volumes:
-#      -  C:\Users\PapenMi\git_repos\single-cell-tutorial\data:/home/ubuntu/single-cell-tutorial/data
-#    entrypoint: jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser
-    entrypoint: jupyter nbconvert --ExecutePreprocessor.timeout=None --to notebook --execute --to html /home/ubuntu/single-cell-tutorial/latest_notebook/Case-study_Mouse-intestinal-epithelium_1906.ipynb
+    volumes:
+      -  C:\Users\PapenMi\git_repos\single-cell-tutorial:/home/ubuntu/single-cell-tutorial
+    entrypoint: jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser
+#    entrypoint: jupyter nbconvert --ExecutePreprocessor.timeout=None --to notebook --execute --to html /home/ubuntu/single-cell-tutorial/latest_notebook/Case-study_Mouse-intestinal-epithelium_1906.ipynb

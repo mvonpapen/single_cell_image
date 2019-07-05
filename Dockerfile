@@ -77,7 +77,7 @@ RUN R -f /tmp/install_R_pkgs.R
 # Configuring access to Jupyter (pw="root")
 RUN mkdir /home/ubuntu/notebooks
 RUN jupyter notebook --generate-config
-RUN echo 'c.NotebookApp.token = ""' >> /home/ubuntu/.jupyter/jupyter_notebook_config.py
+# RUN echo 'c.NotebookApp.token = ""' >> /home/ubuntu/.jupyter/jupyter_notebook_config.py
 
 # Jupyter listens port: 8888
 EXPOSE 8888
@@ -86,4 +86,4 @@ EXPOSE 8888
 COPY data /home/ubuntu/single-cell-tutorial/data
 
 # Run jupyter notebook and export as html
-# CMD jupyter nbconvert --ExecutePreprocessor.timeout=None --to notebook --execute --to html /home/ubuntu/single-cell-tutorial/latest_notebook/Case-study_Mouse-intestinal-epithelium_1906.ipynb
+CMD jupyter nbconvert --ExecutePreprocessor.timeout=None --to notebook --execute --to html /home/ubuntu/single-cell-tutorial/latest_notebook/Case-study_Mouse-intestinal-epithelium_1906.ipynb
