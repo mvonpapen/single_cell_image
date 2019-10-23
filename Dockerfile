@@ -74,16 +74,12 @@ ENV PATH /home/ubuntu/anaconda3/envs/sc-tutorial/bin:$PATH
 ADD install_R_pkgs.R /tmp/
 RUN R -f /tmp/install_R_pkgs.R
 
-# Configuring access to Jupyter (pw="root")
-RUN mkdir /home/ubuntu/notebooks
-RUN jupyter notebook --generate-config
-# RUN echo 'c.NotebookApp.token = ""' >> /home/ubuntu/.jupyter/jupyter_notebook_config.py
+# Apply bugfix to anndata's h5sparse.py
+# (_set_many function crashes if x is scalar)
+RUN wget -O /home/ubuntu/anaconda3/envs/sc-tutorial/lib/python3.7/site-packages/anndata/h5py/h5sparse.py https://raw.githubusercontent.com/theislab/anndata/master/anndata/h5py/h5sparse.py
 
-# Jupyter listens port: 8888
-EXPOSE 8888
-
-# Add Haber 2017 data
-COPY data /home/ubuntu/single-cell-tutorial/data
+# install nbextensions for fancy notebook
+RUN conda install -y --name sc-tutorial -c conda-forge jupyter_contrib_nbextensions
 
 # Run jupyter notebook and export as html
-CMD jupyter nbconvert --ExecutePreprocessor.timeout=None --to notebook --execute --to html /home/ubuntu/single-cell-tutorial/latest_notebook/Case-study_Mouse-intestinal-epithelium_1906.ipynb
+CMD jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser
